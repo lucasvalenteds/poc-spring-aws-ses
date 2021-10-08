@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title th:text="${title}">Welcome to FooX!</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+</head>
+<body>
+<p th:text="'Hey ' + ${name} + ','">John Smith</p>
+<p>
+    You have been successfully created your <b>FooX</b> account. Thank you for join
+    us in this amazing journey to improve the world.
+</p>
+<p>
+    Best regards, <br/>&emsp;<em>Foo Company Team</em>
+</p>
+<p>
+    <span th:text="${timestamp}">January 1, 2021</span>
+<p>
+</body>
+</html>

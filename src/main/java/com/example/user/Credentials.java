@@ -1,15 +1,15 @@
 package com.example.user;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-
 import java.util.Objects;
 
 public final class Credentials {
 
-    private final String email;
-    private final String password;
+    private String email;
+    private String password;
 
-    @JsonCreator
+    public Credentials() {
+    }
+
     public Credentials(String email, String password) {
         this.email = email;
         this.password = password;
@@ -19,8 +19,16 @@ public final class Credentials {
         return email;
     }
 
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
     public String getPassword() {
         return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     @Override

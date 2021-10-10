@@ -46,7 +46,7 @@ class SESPostmanTest {
         var source = SESPostmanTestBuilder.SOURCE;
         var postman = new SESPostman(emails, sesClient, source);
 
-        var sesResponse = SESPostmanTestBuilder.createSesSuccessfulResponse();
+        var sesResponse = SESPostmanTestBuilder.createSesSuccessfulSendEmailResponse();
         Mockito.when(sesClient.sendEmail(Mockito.any(SendEmailRequest.class)))
             .thenReturn(CompletableFuture.completedFuture(sesResponse));
 
@@ -111,7 +111,7 @@ class SESPostmanTest {
         var source = SESPostmanTestBuilder.SOURCE;
         var postman = new SESPostman(emails, sesClient, source);
 
-        var sesResponse = SESPostmanTestBuilder.createSesFailureResponse();
+        var sesResponse = SESPostmanTestBuilder.createSesFailureSendEmailResponse();
         Mockito.when(sesClient.sendEmail(Mockito.any(SendEmailRequest.class)))
             .thenReturn(CompletableFuture.completedFuture(sesResponse));
 

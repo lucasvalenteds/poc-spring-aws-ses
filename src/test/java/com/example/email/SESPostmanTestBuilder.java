@@ -14,15 +14,15 @@ public final class SESPostmanTestBuilder {
     private SESPostmanTestBuilder() {
     }
 
-    public static SendEmailResponse createSesSuccessfulResponse() {
-        return SESPostmanTestBuilder.createSesResponse(HttpStatus.OK);
+    public static SendEmailResponse createSesSuccessfulSendEmailResponse() {
+        return SESPostmanTestBuilder.createSesSendEmailResponse(HttpStatus.OK);
     }
 
-    public static SendEmailResponse createSesFailureResponse() {
-        return SESPostmanTestBuilder.createSesResponse(HttpStatus.INTERNAL_SERVER_ERROR);
+    public static SendEmailResponse createSesFailureSendEmailResponse() {
+        return SESPostmanTestBuilder.createSesSendEmailResponse(HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    private static SendEmailResponse createSesResponse(HttpStatus httpStatus) {
+    private static SendEmailResponse createSesSendEmailResponse(HttpStatus httpStatus) {
         return (SendEmailResponse) SendEmailResponse.builder()
             .messageId(UUID.randomUUID().toString())
             .sdkHttpResponse(

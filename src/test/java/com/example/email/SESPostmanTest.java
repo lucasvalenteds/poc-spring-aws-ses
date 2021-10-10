@@ -1,7 +1,7 @@
 package com.example.email;
 
-import com.example.ServiceConfiguration;
 import com.example.ThymeleafConfiguration;
+import com.example.testing.TestingConfiguration;
 import com.example.user.UserCreatedEmail;
 import com.example.user.UserDeletedEmail;
 import com.example.user.UserTestBuilder;
@@ -10,7 +10,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mockito;
 import org.springframework.context.ApplicationContext;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 import org.thymeleaf.spring5.ISpringWebFluxTemplateEngine;
@@ -25,11 +24,9 @@ import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @ExtendWith(SpringExtension.class)
-@ActiveProfiles("local")
-@SpringJUnitConfig({ServiceConfiguration.class, ThymeleafConfiguration.class})
+@SpringJUnitConfig({TestingConfiguration.class, ThymeleafConfiguration.class})
 class SESPostmanTest {
 
     private ISpringWebFluxTemplateEngine templateEngine;

@@ -1,12 +1,11 @@
 package com.example.user;
 
-import com.example.ServiceConfiguration;
 import com.example.ThymeleafConfiguration;
+import com.example.testing.TestingConfiguration;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.context.ApplicationContext;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 import org.thymeleaf.spring5.ISpringWebFluxTemplateEngine;
@@ -20,8 +19,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @ExtendWith(SpringExtension.class)
-@ActiveProfiles("local")
-@SpringJUnitConfig({ServiceConfiguration.class, ThymeleafConfiguration.class})
+@SpringJUnitConfig({TestingConfiguration.class, ThymeleafConfiguration.class})
 class UserDeletedEmailTest {
 
     private UserDeletedEmail userDeletedEmail;

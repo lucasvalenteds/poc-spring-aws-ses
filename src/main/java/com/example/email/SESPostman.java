@@ -63,7 +63,9 @@ public final class SESPostman extends Postman {
                 if (response.sdkHttpResponse().isSuccessful()) {
                     return Mono.empty();
                 } else {
-                    return Mono.error(new EmailException(response.messageId()));
+                    return Mono.error(new EmailException(
+                        "Could not send e-mail via SES (messageId=" + response.messageId() + ")"
+                    ));
                 }
             });
     }

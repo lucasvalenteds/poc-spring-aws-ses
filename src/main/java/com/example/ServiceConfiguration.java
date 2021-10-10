@@ -14,9 +14,12 @@ public class ServiceConfiguration {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ServiceConfiguration.class);
 
+    private static final String LOCAL = "local";
+    private static final String DEVELOPMENT = "dev";
+
     @Configuration
-    @Profile("local")
-    @PropertySource({"classpath:application.properties", "classpath:application-local.properties"})
+    @Profile(LOCAL)
+    @PropertySource({"classpath:application.properties", "classpath:application-" + LOCAL + ".properties"})
     static class Local implements ApplicationListener<ContextRefreshedEvent> {
 
         @Override
@@ -31,8 +34,8 @@ public class ServiceConfiguration {
     }
 
     @Configuration
-    @Profile("dev")
-    @PropertySource({"classpath:application.properties", "classpath:application-dev.properties"})
+    @Profile(DEVELOPMENT)
+    @PropertySource({"classpath:application.properties", "classpath:application-" + DEVELOPMENT + ".properties"})
     static class Development {
     }
 }

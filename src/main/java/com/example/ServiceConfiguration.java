@@ -14,8 +14,8 @@ public class ServiceConfiguration {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ServiceConfiguration.class);
 
-    private static final String LOCAL = "local";
-    private static final String DEVELOPMENT = "dev";
+    public static final String LOCAL = "local";
+    public static final String DEVELOPMENT = "dev";
 
     @Configuration
     @Profile(LOCAL)
@@ -29,7 +29,7 @@ public class ServiceConfiguration {
                 .verifySourceEmail()
                 .doOnError(throwable -> LOGGER.error("Could not verify source e-mail address", throwable))
                 .doOnSuccess(it -> LOGGER.info("Source e-mail address verified successfully"))
-                .subscribe();
+                .block();
         }
     }
 

@@ -24,26 +24,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @SpringJUnitConfig({ServiceConfiguration.class, ThymeleafConfiguration.class})
 class UserDeletedEmailTest {
 
-    private static final String EXPECTED_EMAIL = """
-        <!DOCTYPE html>
-        <html>
-        <head>
-            <title>FooX account deleted</title>
-            <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-        </head>
-        <body>
-        <p>Hey John,</p>
-        <p>
-            We're sorry to see you go. Thank you for being with us and feel
-            free to come back whenever you want.
-        </p>
-        <p>
-            See you soon, <br/>&emsp;<em>Foo Company Team</em>
-        </p>
-        </body>
-        </html>
-        """;
-
     private UserDeletedEmail userDeletedEmail;
 
     @BeforeEach
@@ -56,7 +36,7 @@ class UserDeletedEmailTest {
     @Test
     void testAcceptsProperties() {
         var user = UserTestBuilder.USER;
-        var properties = new UserDeletedProperties(user.email(), user.firstname());
+        var properties = new UserDeletedProperties(user.getEmail(), user.getFirstname());
 
         var accepts = userDeletedEmail.accepts(properties);
 
@@ -75,13 +55,12 @@ class UserDeletedEmailTest {
     @Test
     void testComposesEmail() {
         var user = UserTestBuilder.USER;
-        var properties = new UserDeletedProperties(user.email(), user.firstname());
+        var properties = new UserDeletedProperties(user.getEmail(), user.getFirstname());
 
         StepVerifier.create(userDeletedEmail.compose(properties))
             .assertNext(email -> {
                 assertEquals("FooX account deleted", email.subject());
-                assertThat(email.targets()).containsOnly(user.email());
-                assertEquals(EXPECTED_EMAIL.trim(), email.body());
+                assertThat(email.targets()).containsOnly(user.getEmail());
             })
             .verifyComplete();
     }

@@ -47,13 +47,13 @@ public final class UserCreatedEmail implements Email {
 
         var variables = Map.<String, Object>ofEntries(
             Map.entry("title", subject),
-            Map.entry("name", user.getFirstname() + " " + user.getLastname()),
+            Map.entry("name", user.firstname() + " " + user.lastname()),
             Map.entry("timestamp", LocalDate.now().format(TIMESTAMP_FORMATTER))
         );
 
         return Mono
             .fromCallable(() -> templateEngine.process(TEMPLATE_FILENAME, new Context(TEMPLATE_LOCALE, variables)))
             .subscribeOn(Schedulers.boundedElastic())
-            .map(body -> new EmailComposed(List.of(user.getEmail()), subject, body));
+            .map(body -> new EmailComposed(List.of(user.email()), subject, body));
     }
 }

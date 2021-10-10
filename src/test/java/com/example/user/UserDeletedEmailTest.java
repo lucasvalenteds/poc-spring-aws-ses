@@ -34,7 +34,7 @@ class UserDeletedEmailTest {
     @Test
     void testAcceptsProperties() {
         var user = UserTestBuilder.USER;
-        var properties = new UserDeletedProperties(user.getEmail(), user.getFirstname());
+        var properties = new UserDeletedProperties(user.email(), user.firstname());
 
         var accepts = userDeletedEmail.accepts(properties);
 
@@ -53,12 +53,12 @@ class UserDeletedEmailTest {
     @Test
     void testComposesEmail() {
         var user = UserTestBuilder.USER;
-        var properties = new UserDeletedProperties(user.getEmail(), user.getFirstname());
+        var properties = new UserDeletedProperties(user.email(), user.firstname());
 
         StepVerifier.create(userDeletedEmail.compose(properties))
             .assertNext(email -> {
                 assertEquals("FooX account deleted", email.subject());
-                assertThat(email.targets()).containsOnly(user.getEmail());
+                assertThat(email.targets()).containsOnly(user.email());
             })
             .verifyComplete();
     }

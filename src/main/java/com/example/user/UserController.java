@@ -33,15 +33,15 @@ public final class UserController {
     @PostMapping("/create")
     @ResponseStatus(HttpStatus.CREATED)
     public Mono<User> create(@RequestBody User user) {
-        if (repository.containsKey(user.getEmail())) {
+        if (repository.containsKey(user.email())) {
             return Mono.error(new UserAlreadyExistsException(user));
         }
 
         return Mono.fromCallable(() -> {
-                repository.put(user.getEmail(), user);
+                repository.put(user.email(), user);
                 return user;
             })
-            .doOnSuccess(it -> LOGGER.info("User created successfully: {}", it.getEmail()))
+            .doOnSuccess(it -> LOGGER.info("User created successfully: {}", it.email()))
             .delayUntil(userCreated -> postman.send(new UserCreatedProperties(userCreated)))
             .doOnSuccess(it -> LOGGER.info("User creation notified via e-mail"))
             .doOnError(throwable -> LOGGER.error("Could not notify user creation via e-mail", throwable));
@@ -50,14 +50,14 @@ public final class UserController {
     @PostMapping("/delete")
     @ResponseStatus(HttpStatus.ACCEPTED)
     public Mono<User> delete(@RequestBody Credentials credentials) {
-        if (!repository.containsKey(credentials.getEmail())) {
-            return Mono.error(new UserNotFoundException(credentials.getEmail()));
+        if (!repository.containsKey(credentials.email())) {
+            return Mono.error(new UserNotFoundException(credentials.email()));
         }
 
-        return Mono.fromCallable(() -> repository.remove(credentials.getEmail()))
-            .doOnSuccess(it -> LOGGER.info("User deleted successfully: {}", it.getEmail()))
+        return Mono.fromCallable(() -> repository.remove(credentials.email()))
+            .doOnSuccess(it -> LOGGER.info("User deleted successfully: {}", it.email()))
             .delayUntil(userDeleted ->
-                postman.send(new UserDeletedProperties(userDeleted.getEmail(), userDeleted.getFirstname()))
+                postman.send(new UserDeletedProperties(userDeleted.email(), userDeleted.firstname()))
             )
             .doOnSuccess(it -> LOGGER.info("User deletion notified via e-mail"))
             .doOnError(throwable -> LOGGER.error("Could not notify user deletion via e-mail", throwable));

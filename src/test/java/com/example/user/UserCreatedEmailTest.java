@@ -43,7 +43,7 @@ class UserCreatedEmailTest {
     @Test
     void testRejectsProperties() {
         var user = UserTestBuilder.USER;
-        var properties = new UserDeletedProperties(user.getEmail(), user.getFirstname());
+        var properties = new UserDeletedProperties(user.email(), user.firstname());
 
         var accepts = userCreatedEmail.accepts(properties);
 
@@ -60,7 +60,7 @@ class UserCreatedEmailTest {
                 assertEquals("Welcome to FooX!", email.subject());
                 assertThat(email.body()).contains("<title>" + email.subject() + "</title>");
                 assertThat(email.body()).contains("<p>Hey John Smith,</p>");
-                assertThat(email.targets()).containsOnly(user.getEmail());
+                assertThat(email.targets()).containsOnly(user.email());
             })
             .verifyComplete();
     }

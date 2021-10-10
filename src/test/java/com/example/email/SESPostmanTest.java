@@ -18,6 +18,7 @@ import software.amazon.awssdk.core.exception.SdkException;
 import software.amazon.awssdk.services.ses.SesAsyncClient;
 import software.amazon.awssdk.services.ses.model.SendEmailRequest;
 import software.amazon.awssdk.services.ses.model.SesException;
+import software.amazon.awssdk.services.ses.model.VerifyEmailAddressRequest;
 
 import java.nio.file.Path;
 import java.util.List;
@@ -126,5 +127,44 @@ class SESPostmanTest {
 
         Mockito.verify(sesClient, Mockito.times(1))
             .sendEmail(Mockito.any(SendEmailRequest.class));
+    }
+
+
+    @Test
+    void testVerifyingSourceEmail() {
+        var emails = List.<Email>of();
+        var sesClient = Mockito.mock(SesAsyncClient.class);
+        var source = SESPostmanTestBuilder.SOURCE;
+        var postman = new SESPostman(emails, sesClient, source);
+
+        var sesResponse = SESPostmanTestBuilder.createSesSuccessfulVerifyEmailAddressResponse();
+        Mockito.when(sesClient.verifyEmailAddress(Mockito.any(VerifyEmailAddressRequest.class)))
+            .thenReturn(CompletableFuture.completedFuture(sesResponse));
+
+        var verify = postman.verifySourceEmail();
+
+        StepVerifier.create(verify)
+            .verifyComplete();
+    }
+
+    @Test
+    void testFailingToVerifySourceEmail() {
+        var emails = List.<Email>of();
+        var sesClient = Mockito.mock(SesAsyncClient.class);
+        var source = SESPostmanTestBuilder.SOURCE;
+        var postman = new SESPostman(emails, sesClient, source);
+
+        var sesResponse = SESPostmanTestBuilder.createSesFailureVerifyEmailAddressResponse();
+        Mockito.when(sesClient.verifyEmailAddress(Mockito.any(VerifyEmailAddressRequest.class)))
+            .thenReturn(CompletableFuture.completedFuture(sesResponse));
+
+        var verify = postman.verifySourceEmail();
+
+        StepVerifier.create(verify)
+            .expectErrorSatisfies(throwable ->
+                assertThat(throwable)
+                    .isInstanceOf(EmailException.class)
+            )
+            .verify();
     }
 }

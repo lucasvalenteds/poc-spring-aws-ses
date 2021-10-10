@@ -9,6 +9,7 @@ import software.amazon.awssdk.services.ses.model.Content;
 import software.amazon.awssdk.services.ses.model.Destination;
 import software.amazon.awssdk.services.ses.model.Message;
 import software.amazon.awssdk.services.ses.model.SendEmailRequest;
+import software.amazon.awssdk.services.ses.model.VerifyEmailAddressRequest;
 
 import java.nio.charset.StandardCharsets;
 import java.util.List;
@@ -63,6 +64,22 @@ public final class SESPostman extends Postman {
                     return Mono.empty();
                 } else {
                     return Mono.error(new EmailException(response.messageId()));
+                }
+            });
+    }
+
+    public Mono<Void> verifySourceEmail() {
+        var request = VerifyEmailAddressRequest.builder()
+            .emailAddress(source)
+            .build();
+
+        return Mono.fromFuture(() -> client.verifyEmailAddress(request))
+            .onErrorMap(EmailException::new)
+            .flatMap(response -> {
+                if (response.sdkHttpResponse().isSuccessful()) {
+                    return Mono.empty();
+                } else {
+                    return Mono.error(new EmailException(response.toString()));
                 }
             });
     }

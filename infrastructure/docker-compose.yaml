@@ -1,0 +1,21 @@
+version: "3.9"
+services:
+  localstack:
+    image: localstack/localstack:0.12.15
+    ports:
+      - "4566:4566"
+    environment:
+      - SERVICES=ses
+      - DEBUG=1
+      - DATA_DIR=/tmp/localstack/data
+      - DOCKER_HOST=unix:///var/run/docker.sock
+      - SMTP_HOST=foocompany.com
+      - SMTP_EMAIL=hey@foocompany.com
+    volumes:
+      - "/tmp/localstack:/tmp/localstack"
+      - "/tmp/var/run/docker.sock:/var/run/docker.sock"
+    networks:
+      - network-infrastructure
+networks:
+  network-infrastructure:
+    driver: bridge

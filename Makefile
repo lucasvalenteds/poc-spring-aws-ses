@@ -4,7 +4,8 @@ EMAIL := john@foocompany.com
 PASSWORD = 123456
 
 create-user:
-	@curl POST \
+	@curl -X POST \
+		--silent \
 		--verbose \
 		--header 'Accept: application/json' \
 		--header 'Content-Type: application/json' \
@@ -12,7 +13,8 @@ create-user:
 		'$(API_URL)/users/create' | jq
 
 delete-user:
-	@curl POST \
+	@curl -X POST \
+		--silent \
 		--verbose \
 		--header 'Accept: application/json' \
 		--header 'Content-Type: application/json' \

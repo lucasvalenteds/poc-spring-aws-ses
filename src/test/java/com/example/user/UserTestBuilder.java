@@ -8,6 +8,9 @@ public final class UserTestBuilder {
 
     public static final UserCreatedProperties USER_CREATED_PROPERTIES = new UserCreatedProperties(USER);
 
+    public static final UserDeletedProperties USER_DELETED_PROPERTIES =
+        new UserDeletedProperties(USER.email(), USER.firstname());
+
     private UserTestBuilder() {
     }
 }

@@ -77,7 +77,7 @@ class UserControllerTest {
     }
 
     @Test
-    void testFailingToSendEmail() {
+    void testFailingToSendUserCreatedEmail() {
         Mockito.when(postman.send(UserTestBuilder.USER_CREATED_PROPERTIES))
             .thenReturn(Mono.error(new EmailException("messageId")));
 
@@ -90,5 +90,34 @@ class UserControllerTest {
 
         Mockito.verify(postman)
             .send(UserTestBuilder.USER_CREATED_PROPERTIES);
+    }
+
+    @Test
+    void testFailingToSendUserDeletedEmail() {
+        Mockito.when(postman.send(UserTestBuilder.USER_CREATED_PROPERTIES))
+            .thenReturn(Mono.empty());
+
+        Mockito.when(postman.send(UserTestBuilder.USER_DELETED_PROPERTIES))
+            .thenReturn(Mono.error(new EmailException("messageId")));
+
+        webTestClient.post()
+            .uri("/users/create")
+            .contentType(MediaType.APPLICATION_JSON)
+            .body(BodyInserters.fromValue(UserTestBuilder.USER))
+            .exchange()
+            .expectStatus().isEqualTo(HttpStatus.CREATED);
+
+        webTestClient.post()
+            .uri("/users/delete")
+            .contentType(MediaType.APPLICATION_JSON)
+            .body(BodyInserters.fromValue(UserTestBuilder.USER))
+            .exchange()
+            .expectStatus().isEqualTo(HttpStatus.INTERNAL_SERVER_ERROR);
+
+        Mockito.verify(postman)
+            .send(UserTestBuilder.USER_CREATED_PROPERTIES);
+
+        Mockito.verify(postman)
+            .send(UserTestBuilder.USER_DELETED_PROPERTIES);
     }
 }
